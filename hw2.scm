@@ -83,8 +83,27 @@
     ; in the list and the second is the largest in the list. 
     ; lst -- flat, contains numeric values, and length is >= 1.
 (define (minAndMax lst)
- '()
+	(minAndMaxHelper lst -999999999 99999999)	
  )
+
+(define (minAndMaxHelper lst max min)
+	(COND 
+		((NULL? lst) (list min max))
+	(ELSE 
+		(COND
+			((> (car lst) max)
+				(minAndMaxHelper lst (car lst)	min)
+			)
+			((< (car lst) min)
+				(minAndMaxHelper lst max (car lst))
+			)
+			(ELSE
+				(minAndMaxHelper (cdr lst) max min)
+			)
+		)
+	)
+	)
+)
 
     (mydisplay (minAndMax '(1 2 -3 4 2)))
     (mydisplay (minAndMax '(1)))
