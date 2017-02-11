@@ -1,7 +1,7 @@
 ; zipcodes.scm contains all the US zipcodes.
 ; You should not modify this file. Your code
 ; should work for other instances of this file.
-(load "zipcodes.scm")
+;(load "zipcodes.scm")
 ; Helper function
 
 (define (mydisplay value)
@@ -32,10 +32,15 @@
 
 ; Return a list with only the negatives items
 (define (negatives lst)
-	lst
+	(cond
+		((NULL? lst) '()) 
+		((< (car lst) 0) (cons (car lst) (negatives (cdr lst))))
+		(ELSE (negatives (cdr lst)))
+	)
 )
 
-(mydisplay (negatives '(-1 1 2 3 4 -4 5)))
+
+(mydisplay (negatives '(-1 1 2 -66 3 0 4 -4 5)))
 
 ; Returns true if the two lists have identical structure.
 ; (struct '(a b c (c a b)) '(1 2 3 (a b c))) -> #t
