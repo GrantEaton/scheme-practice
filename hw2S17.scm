@@ -23,7 +23,10 @@
 
 ; Return a list with the original list's values doubled.
 (define (doubleIt lst)
-	lst
+	(COND	 
+		((NULL? lst) '())
+		(ELSE (CONS (* (car lst) 2) (doubleIt (cdr lst)) ))
+	)
 )
 
 (mydisplay (doubleIt '(-1 1 2 3 4 -4 5)))
@@ -35,7 +38,35 @@
 ; (union '(a b c) '(1 2 a b c)) -> (a b c 1 2)
 ; (union '(a b c) '(1 2 a b c 0)) -> (a b c 1 2 0)
 (define (union lst1 lst2)
-	(append lst1 lst2)
+	(deleteDuplicates (append lst1 lst2) '())	
+)
+(define (checkVal lst var)
+	(cond
+		((NULL? lst) var)
+		((EQV? (car lst) var)
+			 '()
+		)
+		(ELSE 	
+			(checkVal (cdr lst) var)
+		)
+	)
+)
+
+(define (deleteDuplicates lst unique)
+	(cond
+		((NULL? lst) unique)
+		(ELSE 
+			(COND 
+				((NOT (NULL? (checkVal (cdr lst) (car lst)) )) 
+					(deleteDuplicates (cdr lst) (cons (checkVal (cdr lst) (car lst)) unique ))
+				)
+				(ELSE 
+					(deleteDuplicates (cdr lst) unique)
+				)
+			)
+		)
+	)
+
 )
 
 (mydisplay (union '(a b c) '(1 2 a b c)))

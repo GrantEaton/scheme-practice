@@ -161,16 +161,15 @@
 	)
 )
 
+(mydisplay (crossproduct '(1 2) '(a b c)))
+; Returns all the latitude and longitude of particular zip code.
+; Returns the first lat/lon, if multiple entries have same zip code.
+; zipcode -- 5 digit integer
+; zips -- the zipcode DB
 
-		(mydisplay (crossproduct '(1 2) '(a b c)))
-
-	    ; Returns all the latitude and longitude of particular zip code.
-	    ; Returns the first lat/lon, if multiple entries have same zip code.
-	    ; zipcode -- 5 digit integer
-    ; zips -- the zipcode DB
-    (define (getLatLon zipcode zips)
-     (list zipcode (car zips))
-    )
+(define (getLatLon zipcode zips)
+	(list zipcode (car zips))
+)
 
 (mydisplay (getLatLon 45056 zipcodes))
 
