@@ -108,28 +108,45 @@
     (mydisplay (minAndMax '(1 2 -3 4 2)))
     (mydisplay (minAndMax '(1)))
 
-    ; Returns a list identical to the first, except all nested lists
-    ; are removed:
-    ; (flatten '(a b c)) -> (a b c)
-    ; (flatten '(a (a a) a) -> (a a a a)
-	    ; (flatten '((a b) (c (d) e) f) -> (a b c d e f)
-		;
-		(define (flatten lst)
-		 '()
+; Returns a list identical to the first, except all nested lists
+; are removed:
+; (flatten '(a b c)) -> (a b c)
+; (flatten '(a (a a) a) -> (a a a a)
+; (flatten '((a b) (c (d) e) f) -> (a b c d e f)
+;
+(define (flatten lst)
+	(display lst)
+	(newline)
+	(cond 
+		((NULL? lst) '())
+		((NULL? (car lst))
+			(flatten (cdr lst))
 		)
-
-		(mydisplay (flatten '(a b c)))
-		(mydisplay (flatten '(a (a a) a)))
-		(mydisplay (flatten '((a b) (c (d) e) f)))
-
-		; The paramters are two lists. The result should contain the cross product
-		; between the two lists: 
-		; The inputs '(1 2) and '(a b c) should return a single list:
-		; ((1 a) (1 b) (1 c) (2 a) (2 b) (2 c))
-		; lst1 & lst2 -- two flat lists.
-		(define (crossproduct lst1 lst2)
-		 '()
+		((list? (car lst))
+			(cond 
+				((list? (caar lst))
+					(append (flatten (car lst))(cdr lst))
+				)
+				(ELSE
+					(cons (caar lst) (flatten  (cons (cdar lst) (cdr lst))))
+				)
+			)
 		)
+		(ELSE (cons (car lst) (flatten (cdr lst))))
+	)
+)
+(mydisplay (flatten '(a b c)))
+(mydisplay (flatten '(a (a a) a)))
+(mydisplay (flatten '((a b) (c (d) e) f)))
+
+; The paramters are two lists. The result should contain the cross product
+; between the two lists: 
+; The inputs '(1 2) and '(a b c) should return a single list:
+; ((1 a) (1 b) (1 c) (2 a) (2 b) (2 c))
+; lst1 & lst2 -- two flat lists.
+(define (crossproduct lst1 lst2)
+'()
+)
 
 		(mydisplay (crossproduct '(1 2) '(a b c)))
 
