@@ -115,8 +115,6 @@
 ; (flatten '((a b) (c (d) e) f) -> (a b c d e f)
 ;
 (define (flatten lst)
-	(display lst)
-	(newline)
 	(cond 
 		((NULL? lst) '())
 		((NULL? (car lst))
@@ -145,8 +143,24 @@
 ; ((1 a) (1 b) (1 c) (2 a) (2 b) (2 c))
 ; lst1 & lst2 -- two flat lists.
 (define (crossproduct lst1 lst2)
-'()
+	(cond
+		((NULL? lst1) '())
+		(ELSE 
+			(append (loopAndCons lst2 (car lst1)) (crossproduct (cdr lst1) lst2 ))
+		)
+	)
+
 )
+
+(define (loopAndCons lst val)
+	(cond
+		((NULL? lst) '())
+		(ELSE 
+			(cons (list val (car lst)) (loopAndCons (cdr lst) val))
+		)
+	)
+)
+
 
 		(mydisplay (crossproduct '(1 2) '(a b c)))
 
