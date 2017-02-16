@@ -14,10 +14,30 @@
 ; ax^2+bx+c=0. Return only real roots. The list will
 ; have 0, 1, or two unique roots
 (define (quadratic a b c)
-	'(0 0)
+	(define root (sqrt(-  (* b b)  (* c (* 4.0 a)))))
+	(cond
+		((= a 0) '())
+		(ELSE
+			(removeIrrational (list(  / (- (- b) root ) (* 2.0 a)) 
+				(  / (+ (- b) root ) (* 2.0 a)))
+			)
+		)
+	)
+
+)
+(define (removeIrrational lst)
+	 
+	(cond 
+		( (NULL? lst) 
+			'()
+		)
+		((rational? (car lst)) (cons (car lst) (removeIrrational (cdr lst))))
+		(ELSE (removeIrrational (cdr lst)))
+	)
+	
 )
 
-(mydisplay (quadratic 1 0 0))
+(mydisplay (quadratic 1 -2 -2))
 (mydisplay (quadratic 0 1 0))
 (mydisplay (quadratic 3 4 2))
 
