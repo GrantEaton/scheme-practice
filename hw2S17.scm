@@ -102,9 +102,20 @@
 	lst
 )
 
+(define (reverseTailHelper lst rev) 
+	(COND 
+		((NULL? lst) 
+			'()
+		)	
+		(ELSE ( reverseTailHelper (cdr lst) rev))		
+	)
+	
+		
+)
+
 (mydisplay (reverseTail '(a b c)))
 (mydisplay (reverseTail '(a (a a) b)))
-(mydisplay (reverseTail '(0))))
+(mydisplay (reverseTail '(0)))
 
 ; compose takes two functions and returns a new function that 
 ; is the composition, F1oF2. The two inputs lambda functions.
@@ -130,7 +141,11 @@
 ; Returns the order information, give a specific order number.
 ; Returns the empty list, if order number is invalid.
 (define (getOrder sales orderNo)
-	(car sales)
+	(COND 
+		((NULL? sales) '())		
+		((EQV? (caar sales) orderNo) (car sales))
+		(ELSE (getOrder(cdr sales) orderNo))
+	)
 )
 
 (mydisplay (getOrder SALES 0))
