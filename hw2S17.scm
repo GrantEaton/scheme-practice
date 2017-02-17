@@ -228,21 +228,28 @@
 ; Returns the provinces with their profits from that
 ; province. These are total profits for each province.
 (define (provincialProfit sales returns)
-	(COND
-		((NULL? sales) '())
-		(deleteDuplicates (getProvinces sales) '())
+	(provincialProfitHelper	sales (getProvinces sales) returns)
+)
+(define (provincialProfitHelper sales provs returns) 
+	(COND 
+		((NULL? provs) '())
+		(ELSE 
+			;(mydisplay (list (car provs) (provinceProfit sales (car provs) returns)) (provincialProfitHelper sales (cdr provs) returns))
+			(append (list (list (car provs) (provinceProfit sales (car provs) returns))) (provincialProfitHelper sales (cdr provs) returns))
+		)
 	)
 )
-(define (provinceProfit sales prov)
+(define (provinceProfit sales prov returns)
 	(COND
-		((NULL? sales) '())
-		((EQUAL? (cadar (cdddar sales))) 
-			(+ (caddr (caddar sales)) (provinceProfit (cdr sales) prov))
+		((NULL? sales) 0)
+		((EQUAL? (cadar (cdddar sales)) prov) 
+			(COND
+				((checkReturns returns (caar sales)) (provinceProfit (cdr sales) prov returns))
+				(ELSE(+ (caddr (caddar sales)) (provinceProfit (cdr sales) prov returns)))
+			)
 		)
-		(ELSE ())
+		(ELSE (provinceProfit (cdr sales) prov returns))
 	)
-
-
 )
 
 (mydisplay (provincialProfit SALES RETURNS))
