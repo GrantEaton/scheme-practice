@@ -202,19 +202,52 @@
 (define (getProvincesHelper sales prov)
 	(COND 
 		((NULL? sales) prov)
-		(ELSE  (getProvincesHelper (cdr sales) (cons(cadar (cdddar sales)) prov) ))
+		((NULL? (checkStr prov (cadar (cdddar sales))))
+			(getProvincesHelper (cdr sales)  prov )	
+		)
+		(ELSE  
+			 (getProvincesHelper (cdr sales) (cons(cadar (cdddar sales)) prov))
+		)
 	)
 )
-
+(define (checkStr lst var)
+	(cond
+		((NULL? lst) var)
+		((EQUAL? (car lst) var)
+			 '()
+		)
+		(ELSE 	
+			(checkStr (cdr lst) var)
+		)
+	)
+)
 (mydisplay (getProvinces SALES))
+(mydisplay (checkStr '("hi" "hey") "hi"))
 
 
 ; Returns the provinces with their profits from that
 ; province. These are total profits for each province.
 (define (provincialProfit sales returns)
-	'((prov1 profit1) (prov2 profit2))
+	(COND
+		((NULL? sales) '())
+		(deleteDuplicates (getProvinces sales) '())
+	)
+)
+(define (provinceProfit sales prov)
+	(COND
+		((NULL? sales) '())
+		((EQUAL? (cadar (cdddar sales))) 
+			(+ (caddr (caddar sales)) (provinceProfit (cdr sales) prov))
+		)
+		(ELSE ())
+	)
+
+
 )
 
 (mydisplay (provincialProfit SALES RETURNS))
+
+
+
 
 ,exit
