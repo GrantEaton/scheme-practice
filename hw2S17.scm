@@ -37,7 +37,7 @@
 	
 )
 
-(mydisplay (quadratic 1 -2 -2))
+(mydisplay (quadratic 1 0 0))
 (mydisplay (quadratic 0 1 0))
 (mydisplay (quadratic 3 4 2))
 
@@ -112,7 +112,6 @@
 	
 		
 )
-(display "testing reverse Tail")
 
 (mydisplay (reverseTail '(a b c)))
 (mydisplay (reverseTail '(a (a a) b)))
@@ -174,24 +173,6 @@
 		(ELSE (checkReturns (cdr returns) orderNo))
 	)	
 )
-
-;(mydisplay (totalProfits '((3 '("10/13/2010" "10/20/2010")
-;	'(261.54 0.04 -213.25 38.94) 
-;	'("Regular Air" "Nunavut") 
-;	"Eldon Base for stackable storage shelf, platinum")
-; '(293 
-;	'("10/1/2012" "10/2/2012") 
-;	'(10123.02 0.07 457.81 208.16) 
-;	'("Delivery Truck" "Nunavut") 
-;	"1.7 Cubic Foot Compact Cube Office Refrigerators")
-; '(293 
-;	'("10/1/2012" "10/3/2012") 
-;	'(244.57 0.01 46.71 8.69) 
-;	'("Regular Air" "Nunavut") 
-;	"Cardinal Slant-D� Ring Binder, Heavy Gauge Vinyl"))
-; '(3)) 
-; )
-
 (mydisplay (totalProfits SALES RETURNS))
 
 ; Returns the set of  provinces that the company sold
@@ -222,7 +203,6 @@
 	)
 )
 (mydisplay (getProvinces SALES))
-(mydisplay (checkStr '("hi" "hey") "hi"))
 
 
 ; Returns the provinces with their profits from that
@@ -256,5 +236,155 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+;
+;Extra functions from hw2.scm that I also did.
+;
+(display "Additional functions from hw2.scm:")
+(newline)
+
+    ; Return a list with only the negatives items
+(define (negatives lst)
+ (cond
+  ((NULL? lst) '()) 
+  ((< (car lst) 0) (cons (car lst) (negatives (cdr lst))))
+  (ELSE (negatives (cdr lst)))
+ )
+ )
+
+
+    (mydisplay (negatives '(-1 1 2 -66 3 0 4 -4 5)))
+
+    ; Returns true if the two lists have identical structure.
+    ; (struct '(a b c (c a b)) '(1 2 3 (a b c))) -> #t
+    ; (struct '(a b c (c (a b) b)) '(1 2 3 (a (a b) c))) -> #f
+(define (struct lst1 lst2)
+ (COND 
+	((AND (NULL? lst1) (NOT (NULL? lst2))) #f)
+	((AND (NULL? lst2) (NOT (NULL? lst1))) #f)
+	((AND (NULL? lst2) (NULL? lst1)) #t)
+  	(ELSE
+  		 (COND
+    			((OR (list? (car lst1)) (list? (car lst2)))
+     				(COND 
+      					((AND (NOT (list? (car lst2))) (list? (car lst1)))	
+						#f
+					)
+					((AND (NOT (list? (car lst1))) (list? (car lst2)))	
+						 #f
+					)
+      					(ELSE
+						(struct (car lst1) (car lst2))
+						 (struct (cdr lst1) (cdr lst2))
+					)
+     				)
+    			)
+    		(ELSE
+    			 (struct (cdr lst1) (cdr lst2))
+   		)	
+  		)
+  	)
+) 
+)
+
+
+    (mydisplay (struct '(a b c (c a b)) '(1 2 3 (a b c))))
+    (mydisplay (struct '(a b c (c (a b) b)) '(1 2 3 (a (a b) c)))) 
+    (mydisplay (struct '(a b c (c a b)) '(1 2 3 (a b c) 0)))
+
+
+    ; Returns a list of two numeric values. The first is the smallest
+    ; in the list and the second is the largest in the list. 
+    ; lst -- flat, contains numeric values, and length is >= 1.
+(define (minAndMax lst)
+	(minAndMaxHelper lst -999999999 99999999)	
+ )
+
+(define (minAndMaxHelper lst max min)
+	(COND 
+		((NULL? lst) (list min max))
+	(ELSE 
+		(COND
+			((> (car lst) max)
+				(minAndMaxHelper lst (car lst)	min)
+			)
+			((< (car lst) min)
+				(minAndMaxHelper lst max (car lst))
+			)
+			(ELSE
+				(minAndMaxHelper (cdr lst) max min)
+			)
+		)
+	)
+	)
+)
+
+    (mydisplay (minAndMax '(1 2 -3 4 2)))
+    (mydisplay (minAndMax '(1)))
+
+
+; Returns a list identical to the first, except all nested lists
+; are removed:
+; (flatten '(a b c)) -> (a b c)
+; (flatten '(a (a a) a) -> (a a a a)
+; (flatten '((a b) (c (d) e) f) -> (a b c d e f)
+;
+(define (flatten lst)
+	(cond 
+		((NULL? lst) '())
+		((NULL? (car lst))
+			(flatten (cdr lst))
+		)
+		((list? (car lst))
+			(cond 
+				((list? (caar lst))
+					(append (flatten (car lst))(cdr lst))
+				)
+				(ELSE
+					(cons (caar lst) (flatten  (cons (cdar lst) (cdr lst))))
+				)
+			)
+		)
+		(ELSE (cons (car lst) (flatten (cdr lst))))
+	)
+)
+(mydisplay (flatten '(a b c)))
+(mydisplay (flatten '(a (a a) a)))
+(mydisplay (flatten '((a b) (c (d) e) f)))
+
+; The paramters are two lists. The result should contain the cross product
+; between the two lists: 
+; The inputs '(1 2) and '(a b c) should return a single list:
+; ((1 a) (1 b) (1 c) (2 a) (2 b) (2 c))
+; lst1 & lst2 -- two flat lists.
+(define (crossproduct lst1 lst2)
+	(cond
+		((NULL? lst1) '())
+		(ELSE 
+			(append (loopAndCons lst2 (car lst1)) (crossproduct (cdr lst1) lst2 ))
+		)
+	)
+
+)
+
+
+(define (loopAndCons lst val)
+	(cond
+		((NULL? lst) '())
+		(ELSE 
+			(cons (list val (car lst)) (loopAndCons (cdr lst) val))
+		)
+	)
+)
 
 ,exit
