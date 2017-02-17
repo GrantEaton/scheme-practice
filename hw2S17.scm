@@ -1,7 +1,7 @@
 ; sales.scm contains all the company's sales.
 ; You should not modify this file. Your code
 ; should work for other instances of this file.
-(load "salesTest.scm")
+(load "sales.scm")
 
 ; Helper function
 (define (mydisplay value)
@@ -105,7 +105,7 @@
 (define (reverseTailHelper lst rev) 
 	(COND 
 		((NULL? lst) 
-			'()
+			rev
 		)	
 		(ELSE rev ( reverseTailHelper (cdr lst) (cons (car lst) rev)))		
 	)
@@ -201,7 +201,7 @@
 )
 (define (getProvincesHelper sales prov)
 	(COND 
-		((NULL? sales) '())
+		((NULL? sales) prov)
 		(ELSE  (getProvincesHelper (cdr sales) (cons(cadar (cdddar sales)) prov) ))
 	)
 )
