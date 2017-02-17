@@ -120,7 +120,7 @@
 ; compose takes two functions and returns a new function that 
 ; is the composition, F1oF2. The two inputs lambda functions.
 (define (compose F1 F2)
-	(eval F1 (interaction-environment))
+	(eval F1 (interaction-environment)
 )
 
 (define square '(lambda (x) (* x  x)))
@@ -252,6 +252,8 @@
 ;
 (display "Additional functions from hw2.scm:")
 (newline)
+(display "returns only negatives:")
+(newline)
 
     ; Return a list with only the negatives items
 (define (negatives lst)
@@ -264,6 +266,8 @@
 
 
     (mydisplay (negatives '(-1 1 2 -66 3 0 4 -4 5)))
+(display "returns true if two lists have identical structure:")
+(newline)
 
     ; Returns true if the two lists have identical structure.
     ; (struct '(a b c (c a b)) '(1 2 3 (a b c))) -> #t
@@ -302,6 +306,8 @@
     (mydisplay (struct '(a b c (c (a b) b)) '(1 2 3 (a (a b) c)))) 
     (mydisplay (struct '(a b c (c a b)) '(1 2 3 (a b c) 0)))
 
+(display "returns max and min from list:")
+(newline)
 
     ; Returns a list of two numeric values. The first is the smallest
     ; in the list and the second is the largest in the list. 
@@ -332,6 +338,8 @@
     (mydisplay (minAndMax '(1 2 -3 4 2)))
     (mydisplay (minAndMax '(1)))
 
+(display "returns a flat list (delete nested elements:")
+(newline)
 
 ; Returns a list identical to the first, except all nested lists
 ; are removed:
@@ -362,6 +370,10 @@
 (mydisplay (flatten '(a (a a) a)))
 (mydisplay (flatten '((a b) (c (d) e) f)))
 
+
+(display "returns the 'cross product' of two lists:")
+(newline)
+
 ; The paramters are two lists. The result should contain the cross product
 ; between the two lists: 
 ; The inputs '(1 2) and '(a b c) should return a single list:
@@ -377,7 +389,6 @@
 
 )
 
-
 (define (loopAndCons lst val)
 	(cond
 		((NULL? lst) '())
@@ -386,5 +397,6 @@
 		)
 	)
 )
+(mydisplay (crossproduct '(1 2) '(a b c)))
 
 ,exit
