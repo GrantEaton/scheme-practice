@@ -99,7 +99,7 @@
 ; (reverseTail '(0)) -> (0)
 ;
 (define (reverseTail lst)
-	lst
+	(reverseTailHelper lst '())
 )
 
 (define (reverseTailHelper lst rev) 
@@ -107,11 +107,12 @@
 		((NULL? lst) 
 			'()
 		)	
-		(ELSE ( reverseTailHelper (cdr lst) rev))		
+		(ELSE rev ( reverseTailHelper (cdr lst) (cons (car lst) rev)))		
 	)
 	
 		
 )
+(display "testing reverse Tail")
 
 (mydisplay (reverseTail '(a b c)))
 (mydisplay (reverseTail '(a (a a) b)))
@@ -155,11 +156,6 @@
 ; Returns the total profits for all sales. Returned
 ; orders are not included in this total
 (define (totalProfits sales returns)
-(display returns)
-			(newline)
-			(display  sales)
-			(newline)
-			
 	(COND 
 		((NULL? sales) 0)		
 		((checkReturns returns (caar sales)) 
@@ -179,12 +175,6 @@
 	)	
 )
 
-(display "checking checkReturns")
-(newline)
-(mydisplay (checkReturns '(998 1412) 998))
-(newline)
-(mydisplay (checkReturns '(998 1412) 997))
-(newline)
 ;(mydisplay (totalProfits '((3 '("10/13/2010" "10/20/2010")
 ;	'(261.54 0.04 -213.25 38.94) 
 ;	'("Regular Air" "Nunavut") 
@@ -207,14 +197,20 @@
 ; Returns the set of  provinces that the company sold
 ; to.
 (define (getProvinces sales)
-	'(the provinces go in a list)
+	(getProvincesHelper sales '())	
+)
+(define (getProvincesHelper sales prov)
+	(COND 
+		((NULL? sales) '())
+		(ELSE  (getProvincesHelper (cdr sales) (cons(cadar (cdddar sales)) prov) ))
+	)
 )
 
 (mydisplay (getProvinces SALES))
 
 
 ; Returns the provinces with their profits from that
-; province. These are total profits fro each province.
+; province. These are total profits for each province.
 (define (provincialProfit sales returns)
 	'((prov1 profit1) (prov2 profit2))
 )
