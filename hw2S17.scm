@@ -119,8 +119,16 @@
 
 ; compose takes two functions and returns a new function that 
 ; is the composition, F1oF2. The two inputs lambda functions.
+
+;
 (define (compose F1 F2)
-	(eval F1 (interaction-environment)
+	(eval F1 (interaction-environment))
+	;(define g (eval F2 (interaction-environment)))
+	; i know what the function is supposed to do, but i cant get the functions to run
+	; My logic is to apply F2 to x then apply F1 to the result.  
+	; this should be working, however it isnt and im not sure why.  
+
+	;'(lambda (x) (apply F1 (apply F2 x) ))
 )
 
 (define square '(lambda (x) (* x  x)))
